@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<body>
+{% block content %}
+    <div class="container mt-5">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">№</th>
+                <th width="160">Категорія</th>
+                <th width="160">Тип операції</th>
+                <th width="100" align="center">Сума</th>
+                <th width="160" align="center">Дата</th>
+                <th width="300" align="center">Опис</th>
+                <th width="" align="center">Управління</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for t in transaction %}
+                <tr>
+                    <td valign="middle">{{ t.id }}</td>
+                    <td valign="middle">{{ t.category }}</td>
+                    <td valign="middle">{{ t.operation_type }}</td>
+                    <td valign="middle">{{ t.value }}</td>
+                    <td valign="middle">{{ t.date }}</td>
+                    <td valign="middle">{{ t.short_description }}</td>
+                    <td valign="middle">
+                        <div class="container align-items-center">
+                            <a class="btn btn-secondary btn-sm" type="Button"
+                            href="transaction/{{ t.id }}/update">Refactor</a>
+                            <a class="btn btn-danger btn-sm ml-3" type="Button"
+                               onclick='return confirm("Are you sure you want to delete Transaction?");'
+                               href="transaction/{{ t.id }}/delete">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-primary btn-lgs" href="transaction/create">Add new transaction</a>
+    </div>
+{% endblock %}
+</body>
+</html>

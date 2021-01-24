@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add category</title>
+</head>
+<body>
+{% block content %}
+    <div class="container-fluid">
+        {#        <div class="container h-25 bg-warning mt-5"></div>#}
+        <div class="d-flex align-items-center mt-5">
+            <div class="col-md-7 offset-md-2">
+                <form method="post" action={% if not is_update %}
+                    {% url 'add_category' %}
+                {% else %}
+                    {% url 'edit_category' id=id %}
+                {% endif %}>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="form-row">
+                            <label for="name">Імя нової категорії:</label><br>
+                            {% render_field form.name class="form-control" placeholder="Bведіть імя категорії." %}
+                            {% if form.name.errors %}
+                                <div class="alert alert-danger">
+                                    {% render_field form.name.errors %}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="form-row mt-3">
+                            <label for="description">Опис нової категорії:</label>
+                            {% render_field form.description class="form-control" placeholder="Bведіть опис категорії." rows="2" %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button class="btn btn-success" type="submit">
+                                {% if is_update %}Update{% else %}Add{% endif %} category
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
