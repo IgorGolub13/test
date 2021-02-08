@@ -1,20 +1,60 @@
-from django.http import HttpResponseRedirect
+from django.db.models.functions import Lower
 from django.shortcuts import render, redirect
 from .models import Category, Transaction
 from .forms import AddCategoryForm, AddTransactionForm
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 # Create your views here.
 
 def view_categories(request):
-    c = Category.objects.all()
-    return render(request, 'app/category/list.html', {'category': c})
+    context = {}
+    url_parameter = request.GET.get("q")
+
+    if url_parameter:
+        category = Category.objects.filter(name__icontains=url_parameter)
+    else:
+        category = Category.objects.all()
+
+    context["category"] = category
+
+    if request.is_ajax():
+        html = render_to_string(
+            template_name="app/category/category-results-partial.html",
+            context={"category": category}
+        )
+
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request, 'app/category/list.html', context=context)
 
 
 def view_transaction(request):
+    context = {}
+    url_parameter = request.GET.get("q")
 
-    t = Transaction.objects.all()
-    return render(request, 'app/transaction/list.html', {'transaction': t})
+    if url_parameter:
+        transactions = Transaction.objects.filter(category__icontains=url_parameter)
+    else:
+        transactions = Transaction.objects.all()
+
+    context["transactions"] = transactions
+    context["categories"] = [category.name for category in Category.objects.all()]
+
+    if request.is_ajax():
+        html = render_to_string(
+            template_name="app/transaction/transaction-results-partial.html",
+            context={"transaction": transactions}
+        )
+
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request, 'app/transaction/list.html', context=context)
 
 
 def add_category(request):

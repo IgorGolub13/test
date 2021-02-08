@@ -19,8 +19,3 @@ class AddTransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['category', 'value', 'short_description', 'operation_type', 'date']
 
-
-class SelectCategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ['name']
