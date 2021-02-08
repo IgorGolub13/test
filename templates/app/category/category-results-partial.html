@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+
+{% extends 'app/base.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% block content %}
+    {% if category %}
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th>Name</th>
+                <th width="500">Description</th>
+                <th width="200" align="center">Drive</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in category %}
+                <tr>
+                    <td valign="middle">{{ c.id }}</td>
+                    <td valign="middle">{{ c.name }}</td>
+                    <td valign="middle">{{ c.description }}</td>
+                    <td valign="middle">
+                        <div class="container align-items-center">
+                            <a class="btn btn-secondary btn-sm" type="Button"
+                               href="category/{{ c.id }}/update">Refactor</a>
+                            <a class="btn btn-danger btn-sm ml-3" type="Button"
+                               onclick='return confirm("Are you sure you want to delete Category?");'
+                               href="category/{{ c.id }}/delete">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    {% else %}
+        <p>No categories found.</p>
+    {% endif %}
+{% endblock %}
+</body>
+</html>
