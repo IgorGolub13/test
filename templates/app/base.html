@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +26,8 @@
     {% endblock %}
 </head>
 <body>
+{% include 'app/navbar.html' %}
+
 {% block body %}
     {% if messages %}
         <div>

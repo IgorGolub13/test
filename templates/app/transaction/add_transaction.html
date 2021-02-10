@@ -21,32 +21,33 @@
                 {% endif %}>
                     {% csrf_token %}
                     <div class="form-group">
-                        <div class="form-row">
+                        <div class="form-row" id = "selected-category">
                             <label for="category">Категорія</label><br>
                             {% render_field form.category class="form-select" %}
                         </div>
 
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-3" id = "transaction-value">
                             <label for="value">Сума транзакції</label>
                             {% render_field form.value type="number" class="form-control" %}
                         </div>
 
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-3" id = "transaction-describe">
                             <label for="short_description">Короткий опис транзакції</label>
                             {% render_field form.short_description class="form-control" rows="2" placeholder="Bведіть опис транзакції" %}
                         </div>
 
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-3" id = "transaction-type">
                             <label for="short_description">Тип операції</label>
                             {% render_field form.operation_type class="form-select" %}
                         </div>
 
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-3" id = "date-transaction">
                             <label for="date">Дата операції</label>
                             {% render_field form.date class="form-control" type="date" %}
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button class="btn btn-danger" type="reset" id="transaction-clear-button">Reset</button>
                             <button class="btn btn-success" type="submit">{% if is_update %}
                                 Update
                             {% else %}

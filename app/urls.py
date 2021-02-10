@@ -1,7 +1,7 @@
-
-
 from django.urls import path, include
+
 from . import views
+from .views import SimpleListReport
 
 urlpatterns = [
     path('category', views.view_categories, name='view_categories'),
@@ -13,5 +13,7 @@ urlpatterns = [
     path('transaction/create', views.add_transaction, name='add_transaction'),
     path('transaction/<int:id>/update', views.edit_transaction, name='edit_transaction'),
     path('transaction/<int:id>/delete', views.delete_transaction, name='delete_transaction'),
+
+    path('report', SimpleListReport.as_view(), name='simple_list_report'),
 
 ]

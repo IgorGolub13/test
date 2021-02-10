@@ -13,9 +13,8 @@
     <div class="container mt-5">
         <div class="form-outline mb-3 d-flex">
             <label for="value">Filter by category:</label>
-            <i id="srch-icon" class="fas fa-search"></i>
             <select class="form-select" id="selected-category">
-            <option selected>All categories</option>
+                <option selected value="">All categories</option>
                 {% for category in categories %}
                     <option value="{{ category }}">{{ category }}</option>
                 {% endfor %}
@@ -24,7 +23,7 @@
 
         </div>
 
-        <div id="rpble-content">
+        <div id="replaceable-content">
             {% include 'app/transaction/transaction-results-partial.html' %}
         </div>
 

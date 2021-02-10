@@ -20,7 +20,7 @@
                 {% endif %}>
                     {% csrf_token %}
                     <div class="form-group">
-                        <div class="form-row">
+                        <div class="form-row" id = "category-name">
                             <label for="name">Імя нової категорії:</label><br>
                             {% render_field form.name class="form-control" placeholder="Bведіть імя категорії." %}
                             {% if form.name.errors %}
@@ -31,12 +31,13 @@
 
                         </div>
 
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-3" id = "category-description">
                             <label for="description">Опис нової категорії:</label>
                             {% render_field form.description class="form-control" placeholder="Bведіть опис категорії." rows="2" %}
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button class="btn btn-danger" type="reset" id="category-clear-button">Reset</button>
                             <button class="btn btn-success" type="submit">
                                 {% if is_update %}Update{% else %}Add{% endif %} category
                             </button>

@@ -1,5 +1,9 @@
+from django.db.models import Sum
 from django.db.models.functions import Lower
 from django.shortcuts import render, redirect
+from slick_reporting.fields import SlickReportField
+from slick_reporting.views import SlickReportView
+
 from .models import Category, Transaction
 from .forms import AddCategoryForm, AddTransactionForm
 from django.template.loader import render_to_string
@@ -37,7 +41,7 @@ def view_transaction(request):
     url_parameter = request.GET.get("q")
 
     if url_parameter:
-        transactions = Transaction.objects.filter(category__icontains=url_parameter)
+        transactions = Transaction.objects.filter(category__name__icontains=url_parameter)
     else:
         transactions = Transaction.objects.all()
 
@@ -47,7 +51,7 @@ def view_transaction(request):
     if request.is_ajax():
         html = render_to_string(
             template_name="app/transaction/transaction-results-partial.html",
-            context={"transaction": transactions}
+            context={"transactions": transactions}
         )
 
         data_dict = {"html_from_view": html}
@@ -118,3 +122,35 @@ def edit_transaction(request, id):
         form = AddTransactionForm(instance=instance)
         is_update = True
     return render(request, 'app/transaction/add_transaction.html', {'form': form, 'is_update': is_update, 'id': id})
+
+
+class SimpleListReport(SlickReportView):
+    report_model = Transaction
+    report_title = 'Report'
+    date_field = 'date'
+    template_name = 'app/report/report_select.html'
+
+    group_by = 'category__name'
+    columns = ['category__name', SlickReportField.create(Sum, 'value', name='value__sum', verbose_name='Price'),]
+
+    # crosstab_model = 'client'
+    # crosstab_columns = [SlickReportField.create(Sum, 'value', name='value__sum', verbose_name=_('Sales'))]
+    # crosstab_compute_reminder = True  # if False the "Reminder" Column will not be computed
+
+    chart_settings = [
+        {
+            'type': 'pie',
+            'data_source': ['value__sum'],
+            'plot_total': True,  # Plot total works here too
+            'title_source': ['category__name'],
+            'title': 'Per categories pie',
+
+        },
+        {
+            'type': 'bar',
+            'data_source': ['value__sum'],
+            'title_source': ['category__name'],
+            'title': 'Per categories bar',
+
+        },
+    ]
